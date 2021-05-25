@@ -1,57 +1,57 @@
-Nodos Ros (Publisher - Suscriber) - Comunicación Arduino
+# ROS Nodes (Publisher - Suscriber) - Arduino Communication
 ==============
-*El proyecto consiste en comunicar Ros y Arduino por comunicacion serial, se utiliza el Arduino uno y se trabaja como un nodo de Ros para la comunicación Serial. El Arduino envia 3 datos (un booleano, un entero y un flotante) por tres topics diferentes, los nodos de Ros creados se encargan de recibir y procesar la información utilizando una funcion de pertenecia para obtener el porcentaje que cada dato tiene a una clase (bajo, medio, alto), si cada dato tiene una pertenencia mayor al 50% a una de las clases se dice que pertenece a esa clase y dependiendo de a que clase pertenezaca cada uno de los tres datos que envia el arduino, se envía un valor en grados diferente al arduino para controlar un servomotor.*
+*On this project we are gonna stablish a communication path between ROS and an Arduino board via Serial Communication, we use the Arduino Uno board and it works as a ROS Node for the Serial Communication. The Arduino Uno board sends 3 data values (1 boolean, 1 integer, 1 float value) via three different topics, ROS Nodes in the computer hadle the receiving and the processing of the information using a belonging function to get the percentage that each data has to a class (Low, Medium, High), if each data has over 50% belonging to one of the classes we could say that that specific data *belongs* to that class and depending on which class belongs each of them three, sent by Arduino Uno board, it sends a value in different grades to the ones sent by the Arduino Uno board to control the servomotor.*
 
 ![alt text](https://github.com/eliandv1911/Nodos_Ros-Arduino/blob/4da2f36b4e77aebddcadc1e05aac8952442dc556/images/funcion_pertenencia.png)
 
 
-**NODO "talker_3d.cpp":**
-*Este nodo se encarga de recibir los tres datos que son enviados de arduino (bool, int, float) por tres diferentes topics y volverlos a enviar por un topic diferente para que otro nodo los reciba*
+**ROS Node "talker_3d.cpp":**
+*This node is the one responsible to receive those 3 data sent by the Arduino Uno board (bool, int, float), this node is suscribed to three topics designated by the Arduino Uno board and this node is gonna send them through some new topics designated by itself so the following nodes could receive them.*
 
-**NODO "listener_talker_bool.cpp":**
-*Este nodo se encarga de recibir el dato booleano que publica el nodo "talker_3d.cpp", si el dato es "true" va a publicar en un topic que tiene un porcentaje de pertenencia de 100% para alto, por el contrario si es "false" va a publicar en el topic que tiene un porcentaje de pertenencia de 100% para bajo*
+**ROS Node "listener_talker_bool.cpp":**
+*This node is responsible to receive the boolean data sent by "talker_3d.cpp", if the boolean data is "true" is gonna sent trough the topic that it has a value of 100% for High, on the other hand, if the boolean data is "false" is gonna sent trough the topic that it has a value of 100% for Low.*
 
-**NODO "listener_talker_int.cpp":**
-*Este nodo se encarga de recibir el dato entero que publica el nodo "talker_3d.cpp", evalua este dato en las funciones de pertenencia y publica el resultado de la evaluacion en un topic diferente*
+**ROS Node "listener_talker_int.cpp":**
+*This node is responsible to receive the integer data sent by "talker_3d.cpp", this node evaluates this data in the belonging function and publish the result of this evaluation trough a different topic.*
 
-**NODO "listener_talker_float.cpp":**
-*Este nodo se encarga de recibir el dato flotante que publica el nodo "talker_3d.cpp", evalua este dato en las funciones de pertenencia y publica el resultado de la evaluacion en un topic diferente*
-
-*-------------------------------------------------------------------------------------------------------------------------------------------------------*
-
-***Nota:** para los tres nodos anteriores los topics de cada nodo que publican, estan publicando cadenas con el porcentaje de pertenencia para cada clase (bajo, medio, alto), por ejemplo: "A100%/M0%/B0%"*
+**ROS Node "listener_talker_float.cpp":**
+*This node is responsible to receive the float data sent by "talker_3d.cpp", this node evaluates this data in the belonging function and publish the result of this evaluation trough a different topic.*
 
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-**NODO "listener_talker_char_1.cpp":**
-*Este nodo se encarga de recibir la cadena que viene del nodo "listener_talker_bool.cpp", separa la cadena y dependiendo del porcentaje de pertenencia (si para una clase es mayor a 50% se dice que pertenece a esa clase) asigna una letra que representa a la clase a la cual pertenece (B-A -> bajo-alto), esta letra se publica como un caracter en un topic*
+***Note:** Those three last nodes send their information trough an independant topic for each one, they publish chain with the percentage of belonging for each class (Low, Medium, High), e.g.:"A100%/M0%/B0%"*
 
-**NODO "listener_talker_char_2.cpp":**
-*Este nodo se encarga de recibir la cadena que viene del nodo "listener_talker_int.cpp", separa la cadena y dependiendo del porcentaje de pertenencia (si para una clase es mayor a 50% se dice que pertenece a esa clase) asigna una letra que representa a la clase a la cual pertenece (B-M-A -> bajo-medio-alto), esta letra se publica como un caracter en un topic*
+*-------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-**NODO "listener_talker_char_3.cpp":**
-*Este nodo se encarga de recibir la cadena que viene del nodo "listener_talker_float.cpp", separa la cadena y dependiendo del porcentaje de pertenencia (si para una clase es mayor a 50% se dice que pertenece a esa clase) asigna una letra que representa a la clase a la cual pertenece (B-M-A -> bajo-medio-alto), esta letra se publica como un caracter en un topic*
+**ROS Node "listener_talker_char_1.cpp":**
+*This node is responsible to receive the chain sent by "listener_talker_bool.cpp", it splits the chain and depending on the belonging percentage (in case the class belonging percentage is greater than 50%, we could say that out data received belongs to that class, whether we still have a small percetage on the other classes or don't), we assign a letter corresponding to the class this data belongs to (B-A -> bajo-alto), this letter is published as a char type value in the new topic.*
 
-**NODO "listener_char_123.cpp":**
-*Este nodo se encarga de recibir los caracteres que publican los tres nodos anteriores y dependiento de los caracteres que lleguen, mediante un arbol de decisiones se le asigna un valor de 0° a 180° a la variable que se va a publicar (la cual corresponde a los grados que se le envian a un servomotor). Este nodo se comunica con el arduino para enviar la informacion procesada (grados del servo)*
+**ROS Node "listener_talker_char_2.cpp":**
+*This node is responsible to receive the chain sent by "listener_talker_int.cpp", it splits the chain and depending on the belonging percentage (in case the class belonging percentage is greater than 50%, we could say that out data received belongs to that class, whether we still have a small percetage on the other classes or don't), we assign a letter corresponding to the class this data belongs to (B-M-A -> bajo-medio-alto), this letter is published as a char type value in the new topic.*
+
+**ROS Node "listener_talker_char_3.cpp":**
+*This node is responsible to receive the chain sent by "listener_talker_float.cpp", it splits the chain and depending on the belonging percentage (in case the class belonging percentage is greater than 50%, we could say that out data received belongs to that class, whether we still have a small percetage on the other classes or don't), we assign a letter corresponding to the class this data belongs to (B-M-A -> bajo-medio-alto), this letter is published as a char type value in the new topic.*
+
+**ROS Node "listener_char_123.cpp":**
+*This node is responsible to receive those three char type values sent by the three last explained nodes and depending on the characters it receives, by means of a decision three, a to-be published data is assigned a value between [0° - 180°] (this values corresponds to the degrees our servo is gonna be set to). This node talks to the Arduino Uno board to send the processed information (servo degrees).*
 
 ![alt text](https://github.com/eliandv1911/Nodos_Ros-Arduino/blob/4da2f36b4e77aebddcadc1e05aac8952442dc556/images/arbol_decisiones.png)
 
-**NODO "serial_node.py" (nodo arduino):**
-*Este nodo corresponde al nodo de arduino, el cual se implementa descargando la biblioteca rosserial de arduino. En el código de arduino se coloca a que topics se va a suscribir y se definen los topics que van a publicar; el nodo de arduino se encarga de tomar los datos boleano, entero y flotante de un interruptor y dos potenciomentros. Igualmente el nodo de arduino recibe un valor entero del topic publicador del nodo "listener_char_123.cpp", el cual contiene la informacion de los grados a los que se va a llevar el servomotor*
+**ROS Node "serial_node.py" (Arduino Uno Node):**
+*This node is implemented by downloading the rosserial arduino library. On this Arduino code we declare which topics out arduino is gonna be listening to and also which ones our Arduino Uno board is gonna be publishing to. The Arduino Node is gonna take those 3 data values (bool, int, float) from 1 switch and 2 potentiometers. Likewise, the arduino node receives an integer value from the topic publisher of the node "listener_char_123.cpp", which contains the information of the degrees to which the servomotor is going to be taken to.*
 
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-**Configuración para implementar el nodo de arduino:**
+**Configuration to implement the Arduino Node:**
 
 <https://biorobotics.fi-p.unam.mx/wp-content/uploads/Courses/contrucci%C3%B3n_de_robots_moviles/2017-1/practicas/prac03.pdf>
 
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-**Descargar Paquete:**
+**Package Downloading:**
 
-*1. El paquete se debe descargar dentro de un workspace; por ejemplo: "/home/workspace/src/paquete_pkg"*
-*2. Utilizando el terminal se abre el archivo ".bashrc" y se agrega el workspace en caso de que no este agregado:*
+*1. Package must be downloaded inside a workspace, e.g.:  "/home/workspace/src/paquete_pkg"*
+*2. Using the terminal we open the file ".bashrc" and add the workspace in case it hasn't been added:*
 
 ```
 $ cd
@@ -59,13 +59,13 @@ $ cd
 $ sudo gedit .bashrc 
 ```
 
-- *Al final del archivo .bashrc se agrega la siguiente linea:*
+- *At the end of the file ".bashrc" we should add the following line of code:*
 
 ```
 source ~/workspace/devel/setup.bash
 ```
 
-- *luego en una ventana de terminal estando en "/home" nos dirigimos al workspace y compilamos:*
+- *Then, on another terminal window on the "/home" location, we enter to the workspace and compile it:*
 
 ```
 $ cd workspace
@@ -74,20 +74,20 @@ $ catkin_make
 ```
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-**Ejecución del proyecto:**
-1. *En una ventana de terminal se inicializa el roscore:*
+**# Project Execution**
+1. *First we open a terminal window and initialize roscore:*
 
 ```
 $ roscore
 ```
 
-2. *Teniendo el arduino conectado al computador y teniendo identificado el puerto del arduino, se ejecuta el nodo de arduino:*
+2. *We connect the Arduino Uno board to the computer and with the port address of it, we execute the Arduino node:*
 
 ```
 $ rosrun rosserial_python serial_node.py /dev/ttyACM0
 ```
 
-3. *Se ejecuta cada uno de los 8 nodos de Ros en una terminal diferente:*
+3. *Then we open a terminal for each node we have, we have 8 c++ nodes so we open 8 terminals and run one of these lines on each terminal:*
 
 ```
 $ rosrun paquete_pkg talker_3d
@@ -100,7 +100,7 @@ $ rosrun paquete_pkg listener_talker_char_3
 $ rosrun paquete_pkg listener_char_123
 ```
 
-4. *Al ejecutar los pasos anteriores podemos ver las conexiones de los nodos ejecutando la siguiente instrucción en otra ventana del terminal:*
+4. *After launching every node explained before, we could see the connections between them executing the folllowing command on a separate terminal:*
 
 ```
 $ rosrun rqt_graph rqt_graph
