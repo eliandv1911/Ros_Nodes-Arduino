@@ -1,5 +1,5 @@
 # ROS Nodes (Publisher - Suscriber) - Arduino Communication
-==============
+
 *On this project we are gonna stablish a communication path between ROS and an Arduino board via Serial Communication, we use the Arduino Uno board and it works as a ROS Node for the Serial Communication. The Arduino Uno board sends 3 data values (1 boolean, 1 integer, 1 float value) via three different topics, ROS Nodes in the computer hadle the receiving and the processing of the information using a belonging function to get the percentage that each data has to a class (Low, Medium, High), if each data has over 50% belonging to one of the classes we could say that that specific data *belongs* to that class and depending on which class belongs each of them three, sent by Arduino Uno board, it sends a value in different grades to the ones sent by the Arduino Uno board to control the servomotor.*
 
 ![alt text](https://github.com/eliandv1911/Nodos_Ros-Arduino/blob/4da2f36b4e77aebddcadc1e05aac8952442dc556/images/funcion_pertenencia.png)
