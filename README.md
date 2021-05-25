@@ -35,7 +35,7 @@
 **ROS Node "listener_char_123.cpp":**
 *This node is responsible to receive those three char type values sent by the three last explained nodes and depending on the characters it receives, by means of a decision three, a to-be published data is assigned a value between [0° - 180°] (this values corresponds to the degrees our servo is gonna be set to). This node talks to the Arduino Uno board to send the processed information (servo degrees).*
 
-![alt text](https://github.com/eliandv1911/Nodos_Ros-Arduino/blob/4da2f36b4e77aebddcadc1e05aac8952442dc556/images/arbol_decisiones.png)
+![alt text](https://github.com/eliandv1911/Ros_Nodes-Arduino/blob/f59d9153f8f082b6ea44b402866ecb51ece63f6f/images/arbol_decisiones.png)
 
 **ROS Node "serial_node.py" (Arduino Uno Node):**
 *This node is implemented by downloading the rosserial arduino library. On this Arduino code we declare which topics out arduino is gonna be listening to and also which ones our Arduino Uno board is gonna be publishing to. The Arduino Node is gonna take those 3 data values (bool, int, float) from 1 switch and 2 potentiometers. Likewise, the arduino node receives an integer value from the topic publisher of the node "listener_char_123.cpp", which contains the information of the degrees to which the servomotor is going to be taken to.*
